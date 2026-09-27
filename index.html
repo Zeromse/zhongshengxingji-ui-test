@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1116" />
+    <meta
+      name="description"
+      content="众生行记 SideStory 的交互式活动界面展示。"
+    />
+    <title>众生行记 / SideStory UI Showcase</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b1016'/%3E%3Cpath d='M7 25V7h18v18zM7 16h18M16 7v18' fill='none' stroke='%23e9edf1' stroke-width='1.4'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23e64949'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="appShell">
+      <video
+        class="backdrop-video"
+        id="referenceVideo"
+        preload="auto"
+        muted
+        playsinline
+        aria-label="众生行记活动录屏背景"
+      >
+        <source src="activity-reference.mp4" type="video/mp4" />
+      </video>
+      <div class="video-tint" aria-hidden="true"></div>
+      <div class="blueprint-grid" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      <header class="topbar ui-layer">
+        <div class="topbar-left">
+          <button class="square-button" id="backButton" type="button" aria-label="返回活动首页" title="返回活动首页">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <button class="home-button" id="homeButton" type="button" aria-label="回到众生行记首页" title="回到活动首页">
+            <span class="home-mark" aria-hidden="true"></span>
+            <span>
+              <strong>众生行记</strong>
+              <small>THE NEW COVENANT</small>
+            </span>
+          </button>
+        </div>
+
+        <div class="topbar-status">
+          <div class="status-item">
+            <span class="status-label">SIDESTORY</span>
+            <strong>05 / 22</strong>
+          </div>
+          <div class="status-rule" aria-hidden="true"></div>
+          <div class="status-item">
+            <span class="status-label">ARCHIVE</span>
+            <strong>2025.05.22</strong>
+          </div>
+          <span class="status-light" aria-label="展示在线"></span>
+        </div>
+      </header>
+
+      <main class="main-stage">
+        <div class="stage-heading">
+          <span class="section-code" id="sceneCode">HUB / 01</span>
+          <h1 id="sceneTitle">众生行记</h1>
+          <p id="sceneSubtitle">在余烬与回声之间，选择一条仍然亮着的路。</p>
+        </div>
+
+        <div class="top-note">
+          <span class="top-note-index">UI SHOWCASE</span>
+          <span class="top-note-line"></span>
+          <span id="sceneHint">点击右侧节点，进入活动分区</span>
+        </div>
+
+        <div class="scene-nav" role="tablist" aria-label="活动分区">
+          <button class="scene-tab is-active" type="button" role="tab" aria-selected="true" data-scene="hub">
+            <span class="tab-index">01</span>
+            <span class="tab-copy"><strong>活动首页</strong><small>OVERVIEW</small></span>
+          </button>
+          <button class="scene-tab" type="button" role="tab" aria-selected="false" data-scene="map">
+            <span class="tab-index">02</span>
+            <span class="tab-copy"><strong>关卡地图</strong><small>OPERATIONS</small></span>
+          </button>
+          <button class="scene-tab" type="button" role="tab" aria-selected="false" data-scene="orders">
+            <span class="tab-index">03</span>
+            <span class="tab-copy"><strong>甜梦会堂</strong><small>ORDERS</small></span>
+          </button>
+          <button class="scene-tab" type="button" role="tab" aria-selected="false" data-scene="notebook">
+            <span class="tab-index">04</span>
+            <span class="tab-copy"><strong>记事簿</strong><small>ARCHIVE</small></span>
+          </button>
+        </div>
+
+        <section class="center-readout" aria-live="polite">
+          <span class="readout-mark" aria-hidden="true"></span>
+          <span>
+            <small id="readoutKicker">CURRENT DESTINATION</small>
+            <strong id="readoutTitle">回到起点</strong>
+          </span>
+        </section>
+
+        <div class="interaction-layer" id="interactionLayer"></div>
+
+        <aside class="detail-panel ui-layer" id="detailPanel" aria-live="polite">
+          <div class="panel-topline">
+            <span id="panelEyebrow">ACTIVE SIGNAL / 01</span>
+            <button class="panel-close" id="panelClose" type="button" aria-label="关闭详情" title="关闭详情">×</button>
+          </div>
+          <div id="panelContent"></div>
+        </aside>
+      </main>
+
+      <footer class="control-dock ui-layer">
+        <div class="dock-left">
+          <button class="dock-icon" id="playToggle" type="button" aria-label="播放录屏" title="播放录屏">
+            <span class="play-glyph" aria-hidden="true"></span>
+          </button>
+          <div class="runtime">
+            <div class="runtime-label">
+              <span>REFERENCE TIMELINE</span>
+              <output id="timeOutput">00:00 / 04:29</output>
+            </div>
+            <input id="progressRange" type="range" min="0" max="269" step="0.1" value="0" aria-label="录屏时间轴" />
+          </div>
+        </div>
+        <div class="dock-right">
+          <span class="dock-copy" id="dockCopy">PAUSED / CLICK TO PREVIEW</span>
+          <button class="dock-icon" id="muteToggle" type="button" aria-label="打开声音" title="打开声音">
+            <span class="sound-glyph" aria-hidden="true"></span>
+          </button>
+          <button class="dock-icon" id="resetButton" type="button" aria-label="重置展示" title="重置展示">
+            <span class="reset-glyph" aria-hidden="true">↺</span>
+          </button>
+        </div>
+      </footer>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
